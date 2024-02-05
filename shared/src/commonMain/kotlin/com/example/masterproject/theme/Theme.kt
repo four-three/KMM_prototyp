@@ -1,4 +1,4 @@
-package com.example.masterproject.android
+package com.example.masterproject.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +14,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 
 @Composable
 fun MyApplicationTheme(
@@ -34,10 +37,17 @@ fun MyApplicationTheme(
         )
     }
     val typography = Typography(
+        bodyLarge = TextStyle(
+            fontFamily = FontFamily.Default,
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp,
+            lineHeight = 24.sp,
+            letterSpacing = 0.5.sp
+        ),
         bodyMedium = TextStyle(
             fontFamily = FontFamily.Default,
             fontWeight = FontWeight.Normal,
-            fontSize = 16.sp
+            fontSize = 14.sp
         )
     )
     val shapes = Shapes(
