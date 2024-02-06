@@ -1,4 +1,4 @@
-package com.example.masterproject.theme
+package com.example.masterproject.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
