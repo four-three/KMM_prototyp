@@ -1,0 +1,36 @@
+CREATE TABLE noteEntity (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    -- will be DATETIME later?
+    createdAt INTEGER NOT NULL,
+    updatedAt INTEGER NOT NULL,
+    location TEXT NOT NULL,
+    title TEXT NOT NULL,
+    note TEXT NOT NULL,
+    imagePath TEXT
+);
+
+getNotes:
+SELECT *
+FROM noteEntity
+ORDER BY createdAt DESC;
+
+insertNoteEntity:
+INSERT
+INTO noteEntity(
+    id,
+    createdAt,
+    updatedAt,
+    location,
+    title,
+    note,
+    imagePath
+) VALUES(?,?,?,?,?,?,?);
+
+deleteNote:
+DELETE FROM noteEntity
+WHERE id = :id;
+
+getNoteById:
+SELECT *
+FROM noteEntity
+WHERE id = :id;
