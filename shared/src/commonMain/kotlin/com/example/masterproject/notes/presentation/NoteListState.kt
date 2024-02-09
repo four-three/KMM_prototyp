@@ -9,7 +9,7 @@ data class NoteListState(
     val isSelectedNoteOpen: Boolean = false,
     //error states
     val titleError: String? = null,
-    val dateError: String? = null,
+    //val dateError: String? = null,
     val locationError: String? = null
     //val noteError: String? = null
 )

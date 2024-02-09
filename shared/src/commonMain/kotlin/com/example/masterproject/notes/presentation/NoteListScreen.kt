@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -21,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.masterproject.notes.domain.Note
+import com.example.masterproject.notes.presentation.components.AddNote
 import com.example.masterproject.notes.presentation.components.NoteListItem
 
 
@@ -74,6 +74,12 @@ fun NoteListScreen(
                 )
             }
         }
-
     }
+
+    AddNote(
+        state = state,
+        newNote = newNote,
+        isOpen = state.isAddNewNoteOpen,
+        onEvent = onEvent
+    )
 }

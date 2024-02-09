@@ -8,6 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.example.masterproject.core.presentation.NotesTheme
+import com.example.masterproject.di.AppModule
 import com.example.masterproject.notes.presentation.NoteListScreen
 import com.example.masterproject.notes.presentation.NoteListViewModel
 import dev.icerock.moko.mvvm.compose.getViewModel
@@ -21,7 +22,8 @@ Here the Wrapper is implemented
 @Composable
 fun App(
     darkTheme: Boolean,
-    dynamicColor: Boolean
+    dynamicColor: Boolean,
+    appModule: AppModule
 ) {
     NotesTheme(
         darkTheme = darkTheme,
@@ -30,7 +32,7 @@ fun App(
         val viewModel = getViewModel(
             key = "note-list-screen",
             factory = viewModelFactory {
-                NoteListViewModel()
+                NoteListViewModel(appModule.noteDataSource)
             }
         )
         val state by viewModel.state.collectAsState()

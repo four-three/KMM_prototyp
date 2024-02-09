@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.example.masterproject.notes.domain.Note
 import com.example.masterproject.notes.domain.NoteDataSource
+import com.example.masterproject.notes.domain.NoteValidator
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -58,12 +59,101 @@ class NoteListViewModel(
                     }
                 }
             }
-            NoteListEvent.DismissNote -> TODO()
-            NoteListEvent.OnAddNewNoteClick -> TODO()
-            NoteListEvent.OnAddPhotoClicked -> TODO()
-            is NoteListEvent.OnPhotoPicked -> TODO()
-            is NoteListEvent.OnTitleChanged -> TODO()
-            is NoteListEvent.SelectNote -> TODO()
+
+            NoteListEvent.DismissNote -> {
+                viewModelScope.launch {
+                    _state.update { it.copy(
+                        isSelectedNoteOpen = false,
+                        isAddNewNoteOpen = false,
+                        titleError = null,
+                        locationError = null
+                    ) }
+                    delay(300L) // Animation delay
+                    newNote = null
+                    _state.update { it.copy(
+                        selectedNote = null
+                    ) }
+                }
+            }
+
+            is NoteListEvent.EditNote -> {
+                _state.update { it.copy(
+                    selectedNote = null,
+                    isAddNewNoteOpen = true,
+                    isSelectedNoteOpen = false
+                ) }
+                newNote = event.note
+            }
+
+            NoteListEvent.OnAddNewNoteClick -> {
+                _state.update { it.copy(
+                    isAddNewNoteOpen = true
+                ) }
+                newNote = Note(
+                    id = null,
+                    createdAt = 0,
+                    updatedAt = 0,
+                    location = "",
+                    title = "",
+                    note = "",
+                    photoBytes = null
+                )
+            }
+
+            is NoteListEvent.OnTitleChanged -> {
+                newNote = newNote?.copy(
+                    title = event.value
+                )
+            }
+
+            is NoteListEvent.OnNoteChanged -> {
+                newNote = newNote?.copy(
+                    note = event.value
+                )
+            }
+
+            is NoteListEvent.OnPhotoPicked -> {
+                newNote = newNote?.copy(
+                    photoBytes = event.bytes
+                )
+            }
+            NoteListEvent.SaveNote -> {
+                newNote?.let { note ->
+                    val result = NoteValidator.validateNote(note)
+                    val errors = listOfNotNull(
+                        result.locationError,
+                        result.titleError
+                    )
+
+                    if(errors.isEmpty()) {
+                        _state.update { it.copy(
+                            isAddNewNoteOpen = false,
+                            locationError = null,
+                            titleError = null
+                        ) }
+                        viewModelScope.launch {
+                            noteDataSource.insertNote(note)
+                            delay(300L) // Animation delay
+                            newNote = null
+                        }
+                    } else {
+                        _state.update { it.copy(
+                            locationError = result.locationError,
+                            titleError = result.titleError
+                        ) }
+                    }
+                }
+            }
+            is NoteListEvent.SelectNote -> {
+                _state.update { it.copy(
+                    selectedNote = event.note,
+                    isSelectedNoteOpen = true
+                ) }
+            }
+            else -> Unit
+
+            // will be handeled outside of the Viewmodel
+            // NoteListEvent.OnAddPhotoClicked
         }
     }
 }
