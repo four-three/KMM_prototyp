@@ -10,6 +10,6 @@ data class NoteListState(
     //error states
     val titleError: String? = null,
     //val dateError: String? = null,
-    val locationError: String? = null
+    //val locationError: String? = null
     //val noteError: String? = null
 )

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
@@ -17,10 +18,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.masterproject.core.presentation.ImagePicker
 import com.example.masterproject.notes.domain.Note
 import com.example.masterproject.notes.presentation.components.AddNote
+import com.example.masterproject.notes.presentation.components.NoteDetail
 import com.example.masterproject.notes.presentation.components.NoteListItem
 
 
@@ -28,17 +32,22 @@ import com.example.masterproject.notes.presentation.components.NoteListItem
 fun NoteListScreen(
     state: NoteListState,
     newNote: Note?,
-
     //this is a Lambda call which allows me to send the event to the Parent-Composable (a ViewModel in this case)
-    onEvent: (NoteListEvent) -> Unit
+    onEvent: (NoteListEvent) -> Unit,
+    imagePicker: ImagePicker
 ) {
+    imagePicker.registerPicker { imageBytes ->
+        onEvent(NoteListEvent.OnPhotoPicked(imageBytes))
+    }
+
     Scaffold(
+        //TODO: put FAB(FloatingActionButton) in the center
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
                     onEvent(NoteListEvent.OnAddNewNoteClick)
                 },
-                shape = RoundedCornerShape(20.dp)
+                shape = CircleShape,
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Add,
@@ -71,15 +80,27 @@ fun NoteListScreen(
                             onEvent(NoteListEvent.SelectNote(note))
                         }
                         .padding(horizontal = 16.dp)
+                        .shadow(2.dp, RoundedCornerShape(16.dp))
                 )
             }
         }
     }
 
+    NoteDetail(
+        isOpen = state.isSelectedNoteOpen,
+        selectedNote = state.selectedNote,
+        onEvent = onEvent,
+    )
+
     AddNote(
         state = state,
         newNote = newNote,
         isOpen = state.isAddNewNoteOpen,
-        onEvent = onEvent
+        onEvent = { event ->
+            if (event is NoteListEvent.OnAddPhotoClicked) {
+                imagePicker.pickImage()
+            }
+            onEvent(event)
+        }
     )
 }

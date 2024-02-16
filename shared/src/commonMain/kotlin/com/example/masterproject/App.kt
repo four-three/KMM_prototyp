@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import com.example.masterproject.core.presentation.ImagePicker
 import com.example.masterproject.core.presentation.NotesTheme
 import com.example.masterproject.di.AppModule
 import com.example.masterproject.notes.presentation.NoteListScreen
@@ -23,7 +24,8 @@ Here the Wrapper is implemented
 fun App(
     darkTheme: Boolean,
     dynamicColor: Boolean,
-    appModule: AppModule
+    appModule: AppModule,
+    imagePicker: ImagePicker
 ) {
     NotesTheme(
         darkTheme = darkTheme,
@@ -43,7 +45,8 @@ fun App(
             NoteListScreen(
                 state = state,
                 newNote = viewModel.newNote,
-                onEvent = viewModel::onEvent
+                onEvent = viewModel::onEvent,
+                imagePicker = imagePicker
             )
         }
     }

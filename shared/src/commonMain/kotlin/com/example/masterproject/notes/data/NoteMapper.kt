@@ -1,9 +1,10 @@
 package com.example.masterproject.notes.data
 
+import com.example.masterproject.core.data.ImageStorage
 import com.example.masterproject.notes.domain.Note
 import database.NoteEntity
 
-fun NoteEntity.toNote(): Note {
+suspend fun NoteEntity.toNote(imageStorage: ImageStorage): Note {
     return Note(
         id = id,
         createdAt = createdAt,
@@ -11,6 +12,6 @@ fun NoteEntity.toNote(): Note {
         location = location,
         title = title,
         note = note,
-        photoBytes = null //TODO: get actual image
+        photoBytes = imagePath?.let { imageStorage.getImage(it) }
     )
 }
