@@ -13,7 +13,7 @@ actual class ImageStorage(
 ) {
     actual suspend fun saveImage(bytes: ByteArray): String {
         return withContext(Dispatchers.IO) {
-            // for PNG needs to be implemented separately
+            // PNG needs to be implemented separately
             val fileName = UUID.randomUUID().toString() + ".jpg"
             context.openFileOutput(fileName, Context.MODE_PRIVATE).use { outputStream ->
                 outputStream.write(bytes)
