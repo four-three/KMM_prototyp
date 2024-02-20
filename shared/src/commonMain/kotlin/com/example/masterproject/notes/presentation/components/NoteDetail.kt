@@ -2,7 +2,6 @@ package com.example.masterproject.notes.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -63,9 +62,6 @@ fun NoteDetail(
                             .clip(RoundedCornerShape(40))
                             .size(150.dp)
                             .background(MaterialTheme.colorScheme.secondaryContainer)
-                            .clickable {
-                                onEvent(NoteListEvent.OnAddPhotoClicked)
-                            }
                             .border(
                                 width = 1.dp,
                                 color = MaterialTheme.colorScheme.primary,
