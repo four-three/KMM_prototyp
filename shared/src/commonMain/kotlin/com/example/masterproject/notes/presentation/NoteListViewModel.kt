@@ -24,7 +24,6 @@ class NoteListViewModel(
 ): ViewModel() {
 
     private val _state = MutableStateFlow(NoteListState())
-
     /**
      * Combines the flows and returns a copy of the most current list of notes
      */
@@ -33,8 +32,7 @@ class NoteListViewModel(
         noteDataSource.getNotes()
     ) { state, notes ->
         state.copy(
-            notes = notes,
-
+            notes = notes
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), NoteListState())
 

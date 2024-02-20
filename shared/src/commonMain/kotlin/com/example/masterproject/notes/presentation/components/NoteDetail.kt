@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
-import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -91,50 +90,32 @@ fun NoteDetail(
                     fontWeight = FontWeight.Bold,
                     fontSize = 30.sp
                 )
-                NoteTitle(
-                    value = "${selectedNote?.title}",
-                    placeholder = "Title",
-                    error = null,
-                    onValueChanged = {
-                        onEvent(NoteListEvent.OnTitleChanged(it))
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                )
                 Spacer(Modifier.height(16.dp))
-//                EditRow(
-//                    onEditClick = {
-//                        selectedNote?.let {
-//                            onEvent(NoteListEvent.EditNote(it))
-//                        }
+                EditRow(
+                    onEditClick = {
+                        selectedNote?.let {
+                            onEvent(NoteListEvent.EditNote(it))
+                        }
+                    },
+                    onDeleteClick = {
+                        onEvent(NoteListEvent.DeleteNote)
+                    }
+                )
+                Text(
+                    text = selectedNote?.note ?: "",
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 18.sp
+                )
+//                NoteMainTextField(
+//                    value = selectedNote?.note ?: "",
+//                    placeholder = "Note",
+//                    error = null,
+//                    onValueChanged = {
+//                        onEvent(NoteListEvent.OnNoteChanged(it))
 //                    },
-//                    onDeleteClick = {
-//                        onEvent(NoteListEvent.DeleteNote)
-//                    }
+//                    modifier = Modifier.fillMaxWidth().height(400.dp)
 //                )
-//                Text(
-//                    text = selectedNote?.note ?: "",
-//                    modifier = Modifier.fillMaxWidth(),
-//                    color = MaterialTheme.colorScheme.onBackground,
-//                    fontSize = 18.sp
-//                )
-                NoteMainTextField(
-                    value = selectedNote?.note ?: "",
-                    placeholder = "Note",
-                    error = null,
-                    onValueChanged = {
-                        onEvent(NoteListEvent.OnNoteChanged(it))
-                    },
-                    modifier = Modifier.fillMaxWidth().height(400.dp)
-                )
-                Spacer(Modifier.height(16.dp))
-                Button(
-
-                    onClick = {
-                        onEvent(NoteListEvent.SaveNote)
-                    },
-                ) {
-                    Text(text = "Save")
-                }
             }
 
             IconButton(
