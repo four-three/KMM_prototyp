@@ -15,7 +15,7 @@ FROM noteEntity
 ORDER BY createdAt DESC;
 
 insertNoteEntity:
-INSERT OR REPLACE
+INSERT
 INTO noteEntity(
     id,
     createdAt,
