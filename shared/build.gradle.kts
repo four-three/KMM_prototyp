@@ -59,6 +59,7 @@ kotlin {
             dependencies {
                 implementation("com.squareup.sqldelight:android-driver:1.5.5")
                 implementation("androidx.appcompat:appcompat:1.6.1")
+                implementation("com.google.accompanist:accompanist-permissions:0.34.0")
                 implementation("androidx.activity:activity-compose:1.7.2")
             }
         }
