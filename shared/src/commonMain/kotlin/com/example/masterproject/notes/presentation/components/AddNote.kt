@@ -29,6 +29,7 @@ import com.example.masterproject.notes.domain.Note
 import com.example.masterproject.notes.presentation.NoteListEvent
 import com.example.masterproject.notes.presentation.NoteListState
 
+
 @Composable
 fun AddNote(
     state: NoteListState,

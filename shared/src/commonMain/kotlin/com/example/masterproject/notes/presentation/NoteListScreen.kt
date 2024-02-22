@@ -98,7 +98,8 @@ fun NoteListScreen(
         isOpen = state.isAddNewNoteOpen,
         onEvent = { event ->
             if (event is NoteListEvent.OnAddPhotoClicked) {
-                imagePicker.pickImage()
+                //imagePicker.pickImage()
+                imagePicker.takeImage()
             }
             onEvent(event)
         }

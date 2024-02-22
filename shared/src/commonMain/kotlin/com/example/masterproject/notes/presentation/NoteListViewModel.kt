@@ -115,6 +115,13 @@ class NoteListViewModel(
                     photoBytes = event.bytes
                 )
             }
+
+            is NoteListEvent.OnPhotoTaken -> {
+                newNote = newNote?.copy(
+                    photoBytes = event.bytes
+                )
+            }
+
             NoteListEvent.SaveNote -> {
                 newNote?.let { note ->
                     val result = NoteValidator.validateNote(note)
