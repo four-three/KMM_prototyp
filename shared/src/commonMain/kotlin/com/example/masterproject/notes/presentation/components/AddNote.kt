@@ -36,7 +36,6 @@ import com.example.masterproject.core.presentation.createPermissions
 import com.example.masterproject.notes.domain.Note
 import com.example.masterproject.notes.presentation.NoteListEvent
 import com.example.masterproject.notes.presentation.NoteListState
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -60,8 +59,8 @@ fun AddNote(
             when (status) {
                 PermissionStatus.GRANTED -> {
                     when (permissionType) {
-                        PermissionType.CAMERA -> NoteListEvent.OnCameraClicked
-                        PermissionType.GALLERY -> NoteListEvent.OnCameraClicked
+                        PermissionType.CAMERA -> onEvent(NoteListEvent.OnCameraClicked)
+                        PermissionType.GALLERY -> onEvent(NoteListEvent.OnCameraClicked)
                     }
                 }
 
@@ -86,23 +85,16 @@ fun AddNote(
             //TODO: launchGallery = true
         }, onCameraRequest = {
             onEvent(NoteListEvent.OnSelectImageSource)
-            coroutineScope.launch {
-                onEvent(NoteListEvent.OnAskForPermission)
-            }
-            //onEvent(NoteListEvent.OnAskForPermission)
-//            onEvent(NoteListEvent.OnCameraClicked)
+            onEvent(NoteListEvent.OnCameraClicked)
         })
     }
     if (state.isCameraOpen) {
-        imagePicker.takeImage()
-//        if (permissionsManager.isPermissionGranted(PermissionType.CAMERA)) {
-////            cameraManager.start()
-//            imagePicker.takeImage()
-//        } else {
-//            permissionsManager.askPermission(PermissionType.CAMERA)
-//            onEvent(NoteListEvent.OnAskForPermission)
-//
-//        }
+        if (permissionsManager.isPermissionGranted(PermissionType.CAMERA)) {
+//            cameraManager.start()
+            imagePicker.takeImage()
+        } else {
+            permissionsManager.askPermission(PermissionType.CAMERA)
+        }
         onEvent(NoteListEvent.OnCameraDismissed)
     }
     if (state.isDeviceSettingOpen) {
@@ -117,7 +109,6 @@ fun AddNote(
             onPositiveClick = {
                 onEvent(NoteListEvent.OnSelectedPermission)
                 onEvent(NoteListEvent.OnDeviceSettingClicked)
-//                onEvent(NoteListEvent.OnAddPhotoClicked)
                 onEvent(NoteListEvent.OnCameraClicked)
             },
             onNegativeClick = {
@@ -146,11 +137,6 @@ fun AddNote(
                             .background(MaterialTheme.colorScheme.secondaryContainer)
                             .clickable {
                                 onEvent(NoteListEvent.OnAddPhotoClicked)
-//                                if(state.isPermissionForCameraAccessGranted) {
-//                                    onEvent(NoteListEvent.OnAddPhotoClicked)
-//                                } else {
-//                                    onEvent(NoteListEvent.OnAskForPermission)
-//                                }
                             }
                             .border(
                                 width = 1.dp,
