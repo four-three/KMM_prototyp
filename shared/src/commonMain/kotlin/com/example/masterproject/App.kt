@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import com.example.masterproject.core.presentation.ImagePicker
 import com.example.masterproject.core.presentation.NotesTheme
 import com.example.masterproject.di.AppModule
+import com.example.masterproject.notes.presentation.NoteListEvent
 import com.example.masterproject.notes.presentation.NoteListScreen
 import com.example.masterproject.notes.presentation.NoteListViewModel
 import dev.icerock.moko.mvvm.compose.getViewModel
@@ -31,6 +32,7 @@ fun App(
         darkTheme = darkTheme,
         dynamicColor = dynamicColor
     ) {
+
         val viewModel = getViewModel(
             key = "note-list-screen",
             factory = viewModelFactory {
@@ -38,6 +40,10 @@ fun App(
             }
         )
         val state by viewModel.state.collectAsState()
+        val onEvent: (NoteListEvent) -> Unit = { event ->
+            viewModel.onEvent(event)
+        }
+
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
@@ -45,7 +51,7 @@ fun App(
             NoteListScreen(
                 state = state,
                 newNote = viewModel.newNote,
-                onEvent = viewModel::onEvent,
+                onEvent = onEvent,
                 imagePicker = imagePicker
             )
         }

@@ -36,15 +36,17 @@ fun NoteListScreen(
     onEvent: (NoteListEvent) -> Unit,
     imagePicker: ImagePicker
 ) {
-    imagePicker.registerPicker { imageBytes ->
-        onEvent(NoteListEvent.OnPhotoPicked(imageBytes))
-    }
+//    imagePicker.registerPicker { imageBytes ->
+//        onEvent(NoteListEvent.OnPhotoPicked(imageBytes))
+//    }
+
 
     Scaffold(
         //TODO: put FAB(FloatingActionButton) in the center
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
+//                          onEvent(NoteListEvent.OnAskForPermission)
                     onEvent(NoteListEvent.OnAddNewNoteClick)
                 },
                 shape = CircleShape,
@@ -96,12 +98,22 @@ fun NoteListScreen(
         state = state,
         newNote = newNote,
         isOpen = state.isAddNewNoteOpen,
-        onEvent = { event ->
-            if (event is NoteListEvent.OnAddPhotoClicked) {
-                //imagePicker.pickImage()
-                imagePicker.takeImage()
-            }
-            onEvent(event)
-        }
+        imagePicker = imagePicker,
+        onEvent = onEvent
     )
+    //{ event ->
+    //            if (event is NoteListEvent.OnAddPhotoClicked) {
+    //                //imagePicker.pickImage()
+    //                imagePicker.takeImage()
+    //            }
+    //            onEvent(event)
+    //        }
+
+//    AskForPermission(
+//        state = state,
+//        newNote = newNote,
+//        isOpen = state.isPermissionsDialogOpen,
+//        imagePicker = imagePicker,
+//        onEvent = onEvent
+//    )
 }

@@ -9,6 +9,7 @@
 import Foundation
 import shared
 import SwiftUI
+import UIKit
 
 struct ComposeView: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {

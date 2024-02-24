@@ -98,6 +98,18 @@ class NoteListViewModel(
                 )
             }
 
+            NoteListEvent.OnAskForPermission -> {
+                _state.update { it.copy(
+                    isPermissionsDialogOpen = true
+                ) }
+            }
+
+            NoteListEvent.OnSelectedPermission -> {
+                _state.update { it.copy(
+                    isPermissionsDialogOpen = false
+                ) }
+            }
+
             is NoteListEvent.OnTitleChanged -> {
                 newNote = newNote?.copy(
                     title = event.value
@@ -155,10 +167,51 @@ class NoteListViewModel(
                     isSelectedNoteOpen = true
                 ) }
             }
+
+            NoteListEvent.OnAddPhotoClicked -> {
+                _state.update { it.copy(
+                    isImageSourceOptionDialogOpen = true
+                ) }
+            }
+
+            NoteListEvent.OnSelectImageSource -> {
+//                if (isPermissionForCameraAccessGranted) {
+//                    isPermissionDialogOpen = false
+//                } else {
+//                    isPermissionDialogOpen = true
+//                }
+                _state.update { it.copy(
+                    isImageSourceOptionDialogOpen = false
+                ) }
+            }
+
+            NoteListEvent.OnDeviceSettingClicked -> {
+                _state.update { it.copy(
+                    isDeviceSettingOpen = true
+                ) }
+            }
+
+            NoteListEvent.OnDeviceSettingDismissed -> {
+                _state.update { it.copy(
+                    isDeviceSettingOpen = false
+                ) }
+            }
+
+            NoteListEvent.OnCameraClicked -> {
+                _state.update { it.copy(
+                    isCameraOpen = true
+                ) }
+            }
+
+            NoteListEvent.OnCameraDismissed -> {
+                _state.update { it.copy(
+                    isCameraOpen = false
+                ) }
+            }
             else -> Unit
 
             // will be handeled outside of the Viewmodel
-            // NoteListEvent.OnAddPhotoClicked
+
         }
     }
 }

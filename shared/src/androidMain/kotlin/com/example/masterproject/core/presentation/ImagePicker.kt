@@ -73,7 +73,6 @@ actual class ImagePicker(
 //            Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 //        }
     }
-
     actual fun pickImage() {
         getContent.launch("image/*")
     }

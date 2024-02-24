@@ -17,6 +17,19 @@ sealed interface NoteListEvent {
     class OnPhotoPicked(val bytes: ByteArray): NoteListEvent
     class OnPhotoTaken(val bytes: ByteArray): NoteListEvent
     object OnAddPhotoClicked: NoteListEvent
+    object OnAskForPermission: NoteListEvent
+
+    object OnSelectImageSource: NoteListEvent
+
+    object OnSelectedPermission: NoteListEvent
+
+    object OnDeviceSettingClicked: NoteListEvent
+
+    object OnCameraClicked: NoteListEvent
+
+    object OnCameraDismissed: NoteListEvent
+
+    object OnDeviceSettingDismissed: NoteListEvent
     data class SelectNote(val note: Note): NoteListEvent //is always editable
     object DeleteNote: NoteListEvent
 }
