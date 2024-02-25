@@ -3,13 +3,10 @@ package com.example.masterproject.core.presentation
 import androidx.compose.runtime.Composable
 
 @Composable
-expect fun createPicker(): ImagePicker
-expect class ImagePicker {
+expect fun createCameraManager(): CameraManager
+expect class CameraManager {
     @Composable
-    fun registerPicker(onImagePicked: (ByteArray) -> Unit)
-
-    fun pickImage()
-
+    fun registerCameraManager(onImagePicked: (ByteArray) -> Unit)
     fun takeImage()
 
 }

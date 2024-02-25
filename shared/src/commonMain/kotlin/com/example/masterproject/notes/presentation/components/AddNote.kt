@@ -27,7 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.example.masterproject.core.presentation.BottomSheet
-import com.example.masterproject.core.presentation.ImagePicker
+import com.example.masterproject.core.presentation.CameraManager
+import com.example.masterproject.core.presentation.GalleryManager
 import com.example.masterproject.core.presentation.PermissionCallback
 import com.example.masterproject.core.presentation.PermissionStatus
 import com.example.masterproject.core.presentation.PermissionType
@@ -42,11 +43,15 @@ fun AddNote(
     state: NoteListState,
     newNote: Note?,
     isOpen: Boolean,
-    imagePicker: ImagePicker,
+    galleryManager: GalleryManager,
+    cameraManager: CameraManager,
     onEvent: (NoteListEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    imagePicker.registerPicker { imageBytes ->
+    galleryManager.registerGalleryManager { imageBytes ->
+        onEvent(NoteListEvent.OnPhotoPicked(imageBytes))
+    }
+    cameraManager.registerCameraManager { imageBytes ->
         onEvent(NoteListEvent.OnPhotoPicked(imageBytes))
     }
 
@@ -86,7 +91,7 @@ fun AddNote(
 
     if (state.isGalleryOpen) {
         if (permissionsManager.isPermissionGranted(PermissionType.GALLERY)) {
-            imagePicker.pickImage()
+            galleryManager.pickImage()
         } else {
             permissionsManager.askPermission(PermissionType.GALLERY)
         }
@@ -94,7 +99,7 @@ fun AddNote(
     }
     if (state.isCameraOpen) {
         if (permissionsManager.isPermissionGranted(PermissionType.CAMERA)) {
-            imagePicker.takeImage()
+            cameraManager.takeImage()
         } else {
             permissionsManager.askPermission(PermissionType.CAMERA)
         }

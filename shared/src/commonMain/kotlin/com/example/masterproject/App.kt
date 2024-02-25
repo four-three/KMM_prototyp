@@ -7,7 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.example.masterproject.core.presentation.ImagePicker
+import com.example.masterproject.core.presentation.CameraManager
+import com.example.masterproject.core.presentation.GalleryManager
 import com.example.masterproject.core.presentation.NotesTheme
 import com.example.masterproject.di.AppModule
 import com.example.masterproject.notes.presentation.NoteListEvent
@@ -26,7 +27,8 @@ fun App(
     darkTheme: Boolean,
     dynamicColor: Boolean,
     appModule: AppModule,
-    imagePicker: ImagePicker
+    galleryManager: GalleryManager,
+    cameraManager: CameraManager
 ) {
     NotesTheme(
         darkTheme = darkTheme,
@@ -52,7 +54,8 @@ fun App(
                 state = state,
                 newNote = viewModel.newNote,
                 onEvent = onEvent,
-                imagePicker = imagePicker
+                galleryManager = galleryManager,
+                cameraManager = cameraManager
             )
         }
     }
