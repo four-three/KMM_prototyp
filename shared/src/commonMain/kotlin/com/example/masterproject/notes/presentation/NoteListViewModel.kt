@@ -175,11 +175,6 @@ class NoteListViewModel(
             }
 
             NoteListEvent.OnSelectImageSource -> {
-//                if (isPermissionForCameraAccessGranted) {
-//                    isPermissionDialogOpen = false
-//                } else {
-//                    isPermissionDialogOpen = true
-//                }
                 _state.update { it.copy(
                     isImageSourceOptionDialogOpen = false
                 ) }
@@ -206,6 +201,18 @@ class NoteListViewModel(
             NoteListEvent.OnCameraDismissed -> {
                 _state.update { it.copy(
                     isCameraOpen = false
+                ) }
+            }
+
+            NoteListEvent.OnGalleryClicked -> {
+                _state.update { it.copy(
+                    isGalleryOpen = true
+                ) }
+            }
+
+            NoteListEvent.OnGalleryDismissed -> {
+                _state.update { it.copy(
+                    isGalleryOpen = false
                 ) }
             }
             else -> Unit

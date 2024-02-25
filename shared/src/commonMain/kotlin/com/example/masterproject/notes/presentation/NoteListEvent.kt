@@ -29,6 +29,10 @@ sealed interface NoteListEvent {
 
     object OnCameraDismissed: NoteListEvent
 
+    object OnGalleryClicked: NoteListEvent
+
+    object OnGalleryDismissed: NoteListEvent
+
     object OnDeviceSettingDismissed: NoteListEvent
     data class SelectNote(val note: Note): NoteListEvent //is always editable
     object DeleteNote: NoteListEvent

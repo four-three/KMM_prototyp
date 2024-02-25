@@ -22,7 +22,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,7 +49,7 @@ fun AddNote(
     imagePicker.registerPicker { imageBytes ->
         onEvent(NoteListEvent.OnPhotoPicked(imageBytes))
     }
-    val coroutineScope = rememberCoroutineScope()
+
     val permissionsManager = createPermissions(object : PermissionCallback {
         override fun onPermissionStatus(
             permissionType: PermissionType,
@@ -60,7 +59,7 @@ fun AddNote(
                 PermissionStatus.GRANTED -> {
                     when (permissionType) {
                         PermissionType.CAMERA -> onEvent(NoteListEvent.OnCameraClicked)
-                        PermissionType.GALLERY -> onEvent(NoteListEvent.OnCameraClicked)
+                        PermissionType.GALLERY -> onEvent(NoteListEvent.OnGalleryClicked)
                     }
                 }
 
@@ -71,26 +70,30 @@ fun AddNote(
         }
     })
 
-//    val cameraManager = remember {
-//        coroutineScope.launch{
-//            imagePicker.takeImage()
-//        }
-//    }
+
 
     if (state.isImageSourceOptionDialogOpen) {
         ImageSourceOptionDialog(onDismissRequest = {
             onEvent(NoteListEvent.OnSelectImageSource)
         }, onGalleryRequest = {
             onEvent(NoteListEvent.OnSelectImageSource)
-            //TODO: launchGallery = true
+            onEvent(NoteListEvent.OnGalleryClicked)
         }, onCameraRequest = {
             onEvent(NoteListEvent.OnSelectImageSource)
             onEvent(NoteListEvent.OnCameraClicked)
         })
     }
+
+    if (state.isGalleryOpen) {
+        if (permissionsManager.isPermissionGranted(PermissionType.GALLERY)) {
+            imagePicker.pickImage()
+        } else {
+            permissionsManager.askPermission(PermissionType.GALLERY)
+        }
+        onEvent(NoteListEvent.OnGalleryDismissed)
+    }
     if (state.isCameraOpen) {
         if (permissionsManager.isPermissionGranted(PermissionType.CAMERA)) {
-//            cameraManager.start()
             imagePicker.takeImage()
         } else {
             permissionsManager.askPermission(PermissionType.CAMERA)

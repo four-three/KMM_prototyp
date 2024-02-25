@@ -12,6 +12,7 @@ data class NoteListState(
     val isPermissionForCameraAccessGranted: Boolean = false,
     val isDeviceSettingOpen: Boolean = false,
     val isCameraOpen: Boolean = false,
+    val isGalleryOpen: Boolean = false,
     //error states
     val titleError: String? = null,
     //val dateError: String? = null,
