@@ -87,4 +87,100 @@ actual class Permissions actual constructor(private val callback: PermissionCall
             context.startActivity(it)
         }
     }
+
+    @OptIn(ExperimentalPermissionsApi::class)
+    @Composable
+    override fun askForLocationPermission(permission: PermissionLocationType) {
+        val lifecycleOwner = LocalLifecycleOwner.current
+        when (permission) {
+            PermissionLocationType.LOCATION_SERVICE_ON -> {
+                val locationPermissionState = rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
+
+                LaunchedEffect(locationPermissionState) {
+                    val permissionResult = locationPermissionState.status
+                    if (!permissionResult.isGranted) {
+                        if (permissionResult.shouldShowRationale) {
+                            callback.onPermissionLocationStatus(
+                                permission,
+                                PermissionStatus.SHOW_RATIONAL
+                            )
+                        } else {
+                            lifecycleOwner.lifecycleScope.launch {
+                                locationPermissionState.launchPermissionRequest()
+                            }
+                        }
+                    } else {
+                        callback.onPermissionLocationStatus(
+                            permission, PermissionStatus.GRANTED
+                        )
+                    }
+                }
+            }
+            PermissionLocationType.LOCATION_FOREGROUND -> {
+                val locationPermissionState = rememberPermissionState(Manifest.permission.ACCESS_COARSE_LOCATION)
+
+                LaunchedEffect(locationPermissionState) {
+                    val permissionResult = locationPermissionState.status
+                    if (!permissionResult.isGranted) {
+                        if (permissionResult.shouldShowRationale) {
+                            callback.onPermissionLocationStatus(
+                                permission,
+                                PermissionStatus.SHOW_RATIONAL
+                            )
+                        } else {
+                            lifecycleOwner.lifecycleScope.launch {
+                                locationPermissionState.launchPermissionRequest()
+                            }
+                        }
+                    } else {
+                        callback.onPermissionLocationStatus(
+                            permission, PermissionStatus.GRANTED
+                        )
+                    }
+                }
+            }
+            PermissionLocationType.LOCATION_BACKGROUND -> {
+                val locationPermissionState = rememberPermissionState(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+
+                LaunchedEffect(locationPermissionState) {
+                    val permissionResult = locationPermissionState.status
+                    if (!permissionResult.isGranted) {
+                        if (permissionResult.shouldShowRationale) {
+                            callback.onPermissionLocationStatus(
+                                permission,
+                                PermissionStatus.SHOW_RATIONAL
+                            )
+                        } else {
+                            lifecycleOwner.lifecycleScope.launch {
+                                locationPermissionState.launchPermissionRequest()
+                            }
+                        }
+                    } else {
+                        callback.onPermissionLocationStatus(
+                            permission, PermissionStatus.GRANTED
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    @OptIn(ExperimentalPermissionsApi::class)
+    @Composable
+    override fun isLocationPermissionGranted(permission: PermissionLocationType): Boolean {
+        return when (permission) {
+            PermissionLocationType.LOCATION_SERVICE_ON -> {
+                val locationPermissionState = rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
+                locationPermissionState.status.isGranted
+            }
+            PermissionLocationType.LOCATION_FOREGROUND -> {
+                val locationPermissionState = rememberPermissionState(Manifest.permission.ACCESS_COARSE_LOCATION)
+                locationPermissionState.status.isGranted
+            }
+            PermissionLocationType.LOCATION_BACKGROUND -> {
+                val locationPermissionState = rememberPermissionState(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                locationPermissionState.status.isGranted
+            }
+        }
+    }
 }

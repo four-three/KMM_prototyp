@@ -64,7 +64,7 @@ class NoteListViewModel(
                         isSelectedNoteOpen = false,
                         isAddNewNoteOpen = false,
                         titleError = null,
-                        //locationError = null
+                        locationError = null
                     ) }
                     delay(300L) // Animation delay
                     newNote = null
@@ -128,12 +128,6 @@ class NoteListViewModel(
                 )
             }
 
-            is NoteListEvent.OnPhotoTaken -> {
-                newNote = newNote?.copy(
-                    photoBytes = event.bytes
-                )
-            }
-
             NoteListEvent.SaveNote -> {
                 newNote?.let { note ->
                     val result = NoteValidator.validateNote(note)
@@ -145,7 +139,7 @@ class NoteListViewModel(
                     if(errors.isEmpty()) {
                         _state.update { it.copy(
                             isAddNewNoteOpen = false,
-                            //locationError = null,
+                            locationError = null,
                             titleError = null
                         ) }
                         viewModelScope.launch {
@@ -155,7 +149,7 @@ class NoteListViewModel(
                         }
                     } else {
                         _state.update { it.copy(
-                            //locationError = result.locationError,
+                            locationError = result.locationError,
                             titleError = result.titleError
                         ) }
                     }
@@ -213,6 +207,18 @@ class NoteListViewModel(
             NoteListEvent.OnGalleryDismissed -> {
                 _state.update { it.copy(
                     isGalleryOpen = false
+                ) }
+            }
+
+            NoteListEvent.OnLocationServiceOn -> {
+                _state.update { it.copy(
+                    isLocationServiceOn = true
+                ) }
+            }
+
+            NoteListEvent.OnLocationServiceOff -> {
+                _state.update { it.copy(
+                    isLocationServiceOn = false
                 ) }
             }
             else -> Unit

@@ -50,5 +50,9 @@
 	<string>$(PRODUCT_NAME) uses camera to setup profile picture of the user.</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>$(PRODUCT_NAME) access photo library to setup profile picture of the user.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>(PRODUCT_NAME) access location to connect the location to your note.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>(PRODUCT_NAME) access location to connect the location to your note.</string>
 </dict>
 </plist>

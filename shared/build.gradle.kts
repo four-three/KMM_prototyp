@@ -61,6 +61,7 @@ kotlin {
                 implementation("androidx.appcompat:appcompat:1.6.1")
                 implementation("androidx.activity:activity-compose:1.7.2")
                 implementation("com.google.accompanist:accompanist-permissions:0.32.0")
+                implementation ("com.google.android.gms:play-services-location:20.0.0")
             }
         }
         val androidUnitTest by getting

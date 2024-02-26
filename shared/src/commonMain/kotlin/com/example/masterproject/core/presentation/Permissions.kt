@@ -13,11 +13,21 @@ interface PermissionHandler {
     @Composable
     fun launchSettings()
 
+    //--------------------------------- Location ---------------------------------
+    @Composable
+    fun askForLocationPermission(permission: PermissionLocationType)
+
+    @Composable
+    fun isLocationPermissionGranted(permission: PermissionLocationType): Boolean
+
 }
 expect class Permissions(callback: PermissionCallback) : PermissionHandler
 
 interface PermissionCallback {
     fun onPermissionStatus(permissionType: PermissionType, status: PermissionStatus)
+
+    //--------------------------------- Location ---------------------------------
+    fun onPermissionLocationStatus(permissionType: PermissionLocationType, status: PermissionStatus)
 }
 
 @Composable
@@ -32,4 +42,10 @@ enum class PermissionStatus {
 enum class PermissionType {
     CAMERA,
     GALLERY
+}
+
+enum class PermissionLocationType {
+    LOCATION_SERVICE_ON,
+    LOCATION_FOREGROUND,
+    LOCATION_BACKGROUND
 }

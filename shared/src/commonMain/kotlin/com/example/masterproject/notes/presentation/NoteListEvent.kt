@@ -15,7 +15,6 @@ sealed interface NoteListEvent {
 
     //if i don't need to compare these classes i don't have to use data-class
     class OnPhotoPicked(val bytes: ByteArray): NoteListEvent
-    class OnPhotoTaken(val bytes: ByteArray): NoteListEvent
     object OnAddPhotoClicked: NoteListEvent
     object OnAskForPermission: NoteListEvent
 
@@ -34,6 +33,10 @@ sealed interface NoteListEvent {
     object OnGalleryDismissed: NoteListEvent
 
     object OnDeviceSettingDismissed: NoteListEvent
+
+    object OnLocationServiceOn: NoteListEvent
+
+    object OnLocationServiceOff: NoteListEvent
     data class SelectNote(val note: Note): NoteListEvent //is always editable
     object DeleteNote: NoteListEvent
 }

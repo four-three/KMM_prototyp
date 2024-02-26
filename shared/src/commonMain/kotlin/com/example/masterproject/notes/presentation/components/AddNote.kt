@@ -30,6 +30,7 @@ import com.example.masterproject.core.presentation.BottomSheet
 import com.example.masterproject.core.presentation.CameraManager
 import com.example.masterproject.core.presentation.GalleryManager
 import com.example.masterproject.core.presentation.PermissionCallback
+import com.example.masterproject.core.presentation.PermissionLocationType
 import com.example.masterproject.core.presentation.PermissionStatus
 import com.example.masterproject.core.presentation.PermissionType
 import com.example.masterproject.core.presentation.createPermissions
@@ -73,8 +74,36 @@ fun AddNote(
                 }
             }
         }
+
+        override fun onPermissionLocationStatus(
+            permissionType: PermissionLocationType,
+            status: PermissionStatus
+        ) {
+            when (status) {
+                PermissionStatus.GRANTED -> {
+                    when (permissionType) {
+                        PermissionLocationType.LOCATION_SERVICE_ON -> {
+                            onEvent(NoteListEvent.OnLocationServiceOff)
+
+                        }
+                        PermissionLocationType.LOCATION_FOREGROUND -> {
+                            onEvent(NoteListEvent.OnLocationServiceOff)
+                        }
+                        PermissionLocationType.LOCATION_BACKGROUND -> {
+                            onEvent(NoteListEvent.OnLocationServiceOff)
+                        }
+                    }
+                }
+                else -> {
+                    onEvent(NoteListEvent.OnLocationServiceOn)
+                }
+            }
+        }
     })
 
+    if(state.isLocationServiceOn) {
+        permissionsManager.askForLocationPermission(PermissionLocationType.LOCATION_SERVICE_ON)
+    }
 
 
     if (state.isImageSourceOptionDialogOpen) {
@@ -102,6 +131,7 @@ fun AddNote(
             cameraManager.takeImage()
         } else {
             permissionsManager.askPermission(PermissionType.CAMERA)
+            permissionsManager.askForLocationPermission(PermissionLocationType.LOCATION_SERVICE_ON)
         }
         onEvent(NoteListEvent.OnCameraDismissed)
     }
@@ -192,7 +222,6 @@ fun AddNote(
                 )
                 Spacer(Modifier.height(16.dp))
                 Button(
-
                     onClick = {
                         onEvent(NoteListEvent.SaveNote)
                     },
