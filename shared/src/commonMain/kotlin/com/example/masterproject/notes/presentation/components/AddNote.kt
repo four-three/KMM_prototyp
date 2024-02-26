@@ -83,26 +83,26 @@ fun AddNote(
                 PermissionStatus.GRANTED -> {
                     when (permissionType) {
                         PermissionLocationType.LOCATION_SERVICE_ON -> {
-                            onEvent(NoteListEvent.OnLocationServiceOff)
-
+                            onEvent(NoteListEvent.OnLocationServiceOn)
                         }
                         PermissionLocationType.LOCATION_FOREGROUND -> {
-                            onEvent(NoteListEvent.OnLocationServiceOff)
+                            onEvent(NoteListEvent.OnLocationServiceOn)
                         }
                         PermissionLocationType.LOCATION_BACKGROUND -> {
-                            onEvent(NoteListEvent.OnLocationServiceOff)
+                            onEvent(NoteListEvent.OnLocationServiceOn)
                         }
                     }
                 }
                 else -> {
-                    onEvent(NoteListEvent.OnLocationServiceOn)
+                    onEvent(NoteListEvent.OnLocationServiceOff)
                 }
             }
         }
     })
 
-    if(state.isLocationServiceOn) {
-        permissionsManager.askForLocationPermission(PermissionLocationType.LOCATION_SERVICE_ON)
+
+    if(!state.isLocationServiceOn) {
+        permissionsManager.askForLocationPermission(PermissionLocationType.LOCATION_BACKGROUND)
     }
 
 
@@ -131,7 +131,7 @@ fun AddNote(
             cameraManager.takeImage()
         } else {
             permissionsManager.askPermission(PermissionType.CAMERA)
-            permissionsManager.askForLocationPermission(PermissionLocationType.LOCATION_SERVICE_ON)
+            //permissionsManager.askForLocationPermission(PermissionLocationType.LOCATION_SERVICE_ON)
         }
         onEvent(NoteListEvent.OnCameraDismissed)
     }
