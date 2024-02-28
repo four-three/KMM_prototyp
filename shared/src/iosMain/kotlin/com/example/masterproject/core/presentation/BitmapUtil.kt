@@ -3,13 +3,12 @@ package com.example.masterproject.core.presentation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asComposeImageBitmap
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import kotlinx.cinterop.ByteVar
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.get
 import kotlinx.cinterop.reinterpret
-import org.jetbrains.skia.Bitmap
 import org.jetbrains.skia.Image
 import platform.UIKit.UIImage
 import platform.UIKit.UIImageJPEGRepresentation
@@ -21,8 +20,8 @@ import platform.UIKit.UIImageJPEGRepresentation
 actual fun rememberBitmapFromBytes(bytes: ByteArray?): ImageBitmap? {
     return remember(bytes) {
         if (bytes != null) {
-            //Image.makeFromEncoded(byteArray).toComposeImageBitmap()
-            Bitmap.makeFromImage(Image.makeFromEncoded(bytes)).asComposeImageBitmap()
+            Image.makeFromEncoded(bytes).toComposeImageBitmap()
+//            Bitmap.makeFromImage(Image.makeFromEncoded(bytes)).asComposeImageBitmap()
         } else {
             null
         }

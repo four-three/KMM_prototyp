@@ -131,7 +131,6 @@ fun AddNote(
             cameraManager.takeImage()
         } else {
             permissionsManager.askPermission(PermissionType.CAMERA)
-            //permissionsManager.askForLocationPermission(PermissionLocationType.LOCATION_SERVICE_ON)
         }
         onEvent(NoteListEvent.OnCameraDismissed)
     }
