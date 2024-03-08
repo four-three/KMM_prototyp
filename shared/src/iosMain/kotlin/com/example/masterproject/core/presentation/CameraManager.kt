@@ -5,11 +5,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.interop.LocalUIViewController
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.refTo
+import platform.Foundation.NSDocumentDirectory
+import platform.Foundation.NSSearchPathForDirectoriesInDomains
+import platform.Foundation.NSUUID
+import platform.Foundation.NSUserDomainMask
+import platform.Foundation.writeToFile
 import platform.UIKit.UIImage
 import platform.UIKit.UIImageJPEGRepresentation
 import platform.UIKit.UIImagePickerController
 import platform.UIKit.UIImagePickerControllerCameraCaptureMode
 import platform.UIKit.UIImagePickerControllerDelegateProtocol
+import platform.UIKit.UIImagePickerControllerEditedImage
 import platform.UIKit.UIImagePickerControllerOriginalImage
 import platform.UIKit.UIImagePickerControllerSourceType
 import platform.UIKit.UINavigationControllerDelegateProtocol
@@ -28,14 +34,7 @@ actual fun createCameraManager(): CameraManager {
 actual class CameraManager(
     private val rootController: UIViewController
 ) {
-    /**
-     * "sourceType = UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypePhotoLibrary"
-     * says apple that we want to look into the phones photo library
-     */
-    private val imagePickerController = UIImagePickerController().apply {
-        sourceType = UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypeCamera
-        cameraCaptureMode = UIImagePickerControllerCameraCaptureMode.UIImagePickerControllerCameraCaptureModePhoto
-    }
+
     private var onImagePicked: (ByteArray) -> Unit = {}
     private lateinit var delegate: UINavigationControllerDelegateProtocol
 
@@ -43,38 +42,58 @@ actual class CameraManager(
     @Composable
     actual fun registerCameraManager(onImagePicked: (ByteArray) -> Unit) {
         this.onImagePicked = onImagePicked
-        delegate = object : NSObject(), UIImagePickerControllerDelegateProtocol,
-            UINavigationControllerDelegateProtocol {
+        delegate = remember {
+            object : NSObject(), UIImagePickerControllerDelegateProtocol,
+                UINavigationControllerDelegateProtocol {
                 override fun imagePickerController(
                     picker: UIImagePickerController,
                     didFinishPickingMediaWithInfo: Map<Any?, *>
                 ) {
-                    val image = UIImageJPEGRepresentation(
+
+                    val imageNSData = UIImageJPEGRepresentation(
                         didFinishPickingMediaWithInfo.getValue(UIImagePickerControllerOriginalImage) as UIImage,
-                        0.99
-                    ) ?: return
-//                    UIImageJPEGRepresentation(didFinishPickingMediaWithInfo.getValue(UIImagePickerControllerOriginalImage) as UIImage, 0.99)
-                    val bytes = ByteArray(image.length.toInt())
-                    memcpy(bytes.refTo(0), image.bytes, image.length)
+                        1.0
+                    ) ?: UIImageJPEGRepresentation(
+                        didFinishPickingMediaWithInfo.getValue(
+                            UIImagePickerControllerEditedImage
+                        ) as UIImage, 1.0
+                    )
+                    val bytes = ByteArray(imageNSData!!.length.toInt())
+                    memcpy(bytes.refTo(0), imageNSData!!.bytes, imageNSData!!.length)
                     onImagePicked(bytes)
                     picker.dismissViewControllerAnimated(true, null)
+                    val path = NSSearchPathForDirectoriesInDomains(
+                        NSDocumentDirectory,
+                        NSUserDomainMask,
+                        true
+                    )[0] as String
+                    val filePath = "$path/" + NSUUID.UUID().UUIDString + ".jpg"
+                    imageNSData.writeToFile(filePath, atomically = true)
                 }
+
 
                 override fun imagePickerControllerDidCancel(picker: UIImagePickerController) {
                     picker.dismissViewControllerAnimated(true, null)
                 }
             }
+        }
     }
 
     actual fun takeImage() {
+        val imagePickerController = UIImagePickerController().apply {
+            allowsEditing = true
+            sourceType = UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypeCamera
+            cameraCaptureMode = UIImagePickerControllerCameraCaptureMode.UIImagePickerControllerCameraCaptureModePhoto
+        }
 //        imagePickerController.setCameraCaptureMode(UIImagePickerControllerCameraCaptureMode.UIImagePickerControllerCameraCaptureModePhoto)
-        //imagePickerController.setDelegate(delegate)
+//        imagePickerController.setDelegate(delegate)
 //        UIApplication.sharedApplication.keyWindow?.rootViewController?.presentViewController(
 //            imagePickerController, true, null
 //        )
         rootController.presentViewController(imagePickerController, true) {
             imagePickerController.delegate = delegate
         }
+
     }
 
 }

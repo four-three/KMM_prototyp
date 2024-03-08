@@ -31,7 +31,7 @@ actual fun rememberBitmapFromBytes(bytes: ByteArray?): ImageBitmap? {
 @OptIn(ExperimentalForeignApi::class)
 fun toByteArray(image: UIImage?): ByteArray? {
     return if (image != null) {
-        val imageData = UIImageJPEGRepresentation(image, 0.99)
+        val imageData = UIImageJPEGRepresentation(image, 1.0)
             ?: throw IllegalArgumentException("image data is null")
         val bytes = imageData.bytes ?: throw IllegalArgumentException("image bytes is null")
         val length = imageData.length

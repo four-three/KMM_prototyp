@@ -21,8 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.masterproject.core.presentation.CameraManager
-import com.example.masterproject.core.presentation.GalleryManager
 import com.example.masterproject.notes.domain.Note
 import com.example.masterproject.notes.presentation.components.AddNote
 import com.example.masterproject.notes.presentation.components.NoteDetail
@@ -34,9 +32,7 @@ fun NoteListScreen(
     state: NoteListState,
     newNote: Note?,
     //this is a Lambda call which allows me to send the event to the Parent-Composable (a ViewModel in this case)
-    onEvent: (NoteListEvent) -> Unit,
-    galleryManager: GalleryManager,
-    cameraManager: CameraManager
+    onEvent: (NoteListEvent) -> Unit
 ) {
     Scaffold(
         //TODO: put FAB(FloatingActionButton) in the center
@@ -94,8 +90,6 @@ fun NoteListScreen(
         state = state,
         newNote = newNote,
         isOpen = state.isAddNewNoteOpen,
-        galleryManager = galleryManager,
-        cameraManager = cameraManager,
         onEvent = onEvent
     )
     //{ event ->

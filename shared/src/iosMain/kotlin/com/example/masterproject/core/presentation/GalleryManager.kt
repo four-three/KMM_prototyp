@@ -30,9 +30,7 @@ actual class GalleryManager(
      * "sourceType = UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypePhotoLibrary"
      * says apple that we want to look into the phones photo library
      */
-    private val imagePickerController = UIImagePickerController().apply {
-        sourceType = UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypePhotoLibrary
-    }
+
     private var onImagePicked: (ByteArray) -> Unit = {}
     private lateinit var delegate: UINavigationControllerDelegateProtocol
 
@@ -40,8 +38,9 @@ actual class GalleryManager(
     @Composable
     actual fun registerGalleryManager(onImagePicked: (ByteArray) -> Unit) {
         this.onImagePicked = onImagePicked
-    delegate = object : NSObject(), UIImagePickerControllerDelegateProtocol,
-        UINavigationControllerDelegateProtocol {
+    delegate = remember {
+        object : NSObject(), UIImagePickerControllerDelegateProtocol,
+            UINavigationControllerDelegateProtocol {
             override fun imagePickerController(
                 picker: UIImagePickerController,
                 didFinishPickingImage: UIImage,
@@ -62,7 +61,15 @@ actual class GalleryManager(
             }
         }
     }
+    }
     actual fun pickImage() {
+        val imagePickerController = UIImagePickerController().apply {
+            allowsEditing = true
+            sourceType = UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypePhotoLibrary
+        }
+//        UIApplication.sharedApplication.keyWindow?.rootViewController?.presentViewController(
+//            imagePickerController, true, null
+//        )
         rootController.presentViewController(imagePickerController, true) {
             imagePickerController.delegate = delegate
         }

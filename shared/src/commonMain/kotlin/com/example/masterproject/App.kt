@@ -7,8 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.example.masterproject.core.presentation.CameraManager
-import com.example.masterproject.core.presentation.GalleryManager
 import com.example.masterproject.core.presentation.NotesTheme
 import com.example.masterproject.di.AppModule
 import com.example.masterproject.notes.presentation.NoteListEvent
@@ -26,9 +24,7 @@ Here the Wrapper is implemented
 fun App(
     darkTheme: Boolean,
     dynamicColor: Boolean,
-    appModule: AppModule,
-    galleryManager: GalleryManager,
-    cameraManager: CameraManager
+    appModule: AppModule
 ) {
     NotesTheme(
         darkTheme = darkTheme,
@@ -53,9 +49,7 @@ fun App(
             NoteListScreen(
                 state = state,
                 newNote = viewModel.newNote,
-                onEvent = onEvent,
-                galleryManager = galleryManager,
-                cameraManager = cameraManager
+                onEvent = onEvent
             )
         }
     }

@@ -27,12 +27,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.example.masterproject.core.presentation.BottomSheet
-import com.example.masterproject.core.presentation.CameraManager
-import com.example.masterproject.core.presentation.GalleryManager
 import com.example.masterproject.core.presentation.PermissionCallback
 import com.example.masterproject.core.presentation.PermissionLocationType
 import com.example.masterproject.core.presentation.PermissionStatus
 import com.example.masterproject.core.presentation.PermissionType
+import com.example.masterproject.core.presentation.createCameraManager
+import com.example.masterproject.core.presentation.createGalleryManager
 import com.example.masterproject.core.presentation.createPermissions
 import com.example.masterproject.notes.domain.Note
 import com.example.masterproject.notes.presentation.NoteListEvent
@@ -44,14 +44,14 @@ fun AddNote(
     state: NoteListState,
     newNote: Note?,
     isOpen: Boolean,
-    galleryManager: GalleryManager,
-    cameraManager: CameraManager,
     onEvent: (NoteListEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val galleryManager = createGalleryManager()
     galleryManager.registerGalleryManager { imageBytes ->
         onEvent(NoteListEvent.OnPhotoPicked(imageBytes))
     }
+    val cameraManager = createCameraManager()
     cameraManager.registerCameraManager { imageBytes ->
         onEvent(NoteListEvent.OnPhotoPicked(imageBytes))
     }
