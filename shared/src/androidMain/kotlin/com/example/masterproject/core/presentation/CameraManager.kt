@@ -13,13 +13,13 @@ import androidx.compose.ui.platform.LocalContext
 import java.util.UUID
 
 @Composable
-actual fun createCameraManager(): CameraManager {
+actual fun createCameraManager(): CameraManagerOld {
     return remember() {
-        CameraManager()
+        CameraManagerOld()
     }
 }
 
-actual class CameraManager() {
+actual class CameraManagerOld() {
     private lateinit var tempPhotoUri: Uri
     private lateinit var launcher: ActivityResultLauncher<Uri>
 
@@ -63,5 +63,43 @@ actual class CameraManager() {
     }
     actual fun takeImage() {
         launcher.launch(tempPhotoUri)
+    }
+}
+
+// ------------------------------------------------------------------------------------------
+@Composable
+actual fun rememberCameraManager(onResult: (SharedImage?) -> Unit): CameraManager {
+    val context = LocalContext.current
+    val contentResolver: ContentResolver = context.contentResolver
+    var tempPhotoUri = remember {
+        val fileName = UUID.randomUUID().toString()
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        }
+        contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)!!
+    }
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = { success ->
+            if (success) {
+                onResult.invoke(SharedImage(getBitmapFromUri(tempPhotoUri, contentResolver)))
+            }
+        }
+    )
+    return remember {
+        CameraManager(
+            onLaunch = {
+                cameraLauncher.launch(tempPhotoUri)
+            }
+        )
+    }
+}
+
+actual class CameraManager actual constructor(
+    private val onLaunch: () -> Unit
+) {
+    actual fun launch() {
+        onLaunch()
     }
 }

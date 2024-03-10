@@ -128,6 +128,21 @@ class NoteListViewModel(
                 )
             }
 
+            is NoteListEvent.OnPhotoTaken -> {
+                newNote?.let { note ->
+                    event.bytes?.let { bytes ->
+                        newNote = note.copy(
+                            photoBytes = bytes
+                        )
+                    }
+//                    viewModelScope.launch {
+//                        noteDataSource.insertNote(note)
+//                        delay(300L) // Animation delay
+//                        newNote = null
+//                    }
+                }
+            }
+
             NoteListEvent.SaveNote -> {
                 newNote?.let { note ->
                     val result = NoteValidator.validateNote(note)

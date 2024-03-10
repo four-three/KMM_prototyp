@@ -3,12 +3,13 @@ package com.example.masterproject.core.presentation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.toComposeImageBitmap
+import androidx.compose.ui.graphics.asComposeImageBitmap
 import kotlinx.cinterop.ByteVar
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.get
 import kotlinx.cinterop.reinterpret
+import org.jetbrains.skia.Bitmap
 import org.jetbrains.skia.Image
 import platform.UIKit.UIImage
 import platform.UIKit.UIImageJPEGRepresentation
@@ -20,8 +21,9 @@ import platform.UIKit.UIImageJPEGRepresentation
 actual fun rememberBitmapFromBytes(bytes: ByteArray?): ImageBitmap? {
     return remember(bytes) {
         if (bytes != null) {
-            Image.makeFromEncoded(bytes).toComposeImageBitmap()
-//            Bitmap.makeFromImage(Image.makeFromEncoded(bytes)).asComposeImageBitmap()
+            //Image.makeFromEncoded(bytes).toComposeImageBitmap()
+            //UIImageWriteToSavedPhotosAlbum(imageNSData, nil, nil, nil)
+            Bitmap.makeFromImage(Image.makeFromEncoded(bytes)).asComposeImageBitmap()
         } else {
             null
         }
@@ -31,7 +33,7 @@ actual fun rememberBitmapFromBytes(bytes: ByteArray?): ImageBitmap? {
 @OptIn(ExperimentalForeignApi::class)
 fun toByteArray(image: UIImage?): ByteArray? {
     return if (image != null) {
-        val imageData = UIImageJPEGRepresentation(image, 1.0)
+        val imageData = UIImageJPEGRepresentation(image, 0.99)
             ?: throw IllegalArgumentException("image data is null")
         val bytes = imageData.bytes ?: throw IllegalArgumentException("image bytes is null")
         val length = imageData.length
