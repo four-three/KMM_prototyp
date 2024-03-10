@@ -35,66 +35,121 @@ actual fun createCameraManager(): CameraManagerOld {
 actual class CameraManagerOld(
     private val rootController: UIViewController
 ) {
-    val imagePickerController = UIImagePickerController().apply {
-//            allowsEditing = true
-        sourceType = UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypeCamera
-        cameraCaptureMode = UIImagePickerControllerCameraCaptureMode.UIImagePickerControllerCameraCaptureModePhoto
-    }
+//    val imagePickerController = UIImagePickerController().apply {
+////            allowsEditing = true
+//        sourceType = UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypeCamera
+//        cameraCaptureMode = UIImagePickerControllerCameraCaptureMode.UIImagePickerControllerCameraCaptureModePhoto
+//    }
     private var onImagePicked: (ByteArray) -> Unit = {}
-    private lateinit var delegate: UINavigationControllerDelegateProtocol
+    //private lateinit var delegate: UINavigationControllerDelegateProtocol
 
-    @OptIn(ExperimentalForeignApi::class)
+
     @Composable
     actual fun registerCameraManager(onImagePicked: (ByteArray) -> Unit) {
         this.onImagePicked = onImagePicked
-        delegate = remember {
-            object : NSObject(), UIImagePickerControllerDelegateProtocol,
+    }
+
+//    @OptIn(ExperimentalForeignApi::class)
+//    @Composable
+//    actual fun registerCameraManager(onImagePicked: (ByteArray) -> Unit) {
+//        this.onImagePicked = onImagePicked
+//        delegate = remember {
+//            object : NSObject(), UIImagePickerControllerDelegateProtocol,
+//                UINavigationControllerDelegateProtocol {
+//                override fun imagePickerController(
+//                    picker: UIImagePickerController,
+//                    didFinishPickingMediaWithInfo: Map<Any?, *>
+//                ) {
+//
+//                    val imageNSData = UIImageJPEGRepresentation(
+//                        didFinishPickingMediaWithInfo.getValue(UIImagePickerControllerOriginalImage) as UIImage,
+//                        1.0
+//                    ) ?: UIImageJPEGRepresentation(
+//                        didFinishPickingMediaWithInfo.getValue(
+//                            UIImagePickerControllerEditedImage
+//                        ) as UIImage, 1.0
+//                    )
+//                    val bytes = ByteArray(imageNSData!!.length.toInt())
+//                    memcpy(bytes.refTo(0), imageNSData!!.bytes, imageNSData!!.length)
+//
+//                    val path = NSSearchPathForDirectoriesInDomains(
+//                        NSDocumentDirectory,
+//                        NSUserDomainMask,
+//                        true
+//                    )[0] as String
+//                    val filePath = "$path/" + NSUUID.UUID().UUIDString + ".jpg"
+//                    imageNSData.writeToFile(filePath, atomically = true)
+//                    onImagePicked(bytes)
+//                    picker.dismissViewControllerAnimated(true, null)
+//                }
+//
+//
+//                override fun imagePickerControllerDidCancel(picker: UIImagePickerController) {
+//                    picker.dismissViewControllerAnimated(true, null)
+//                }
+//            }
+//        }
+//    }
+
+    @OptIn(ExperimentalForeignApi::class)
+    actual fun takeImage() {
+
+        val picker = UIImagePickerController().apply {
+            sourceType =  UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypeCamera
+            delegate = object : NSObject(), UIImagePickerControllerDelegateProtocol,
                 UINavigationControllerDelegateProtocol {
+
                 override fun imagePickerController(
                     picker: UIImagePickerController,
                     didFinishPickingMediaWithInfo: Map<Any?, *>
                 ) {
 
-                    val imageNSData = UIImageJPEGRepresentation(
-                        didFinishPickingMediaWithInfo.getValue(UIImagePickerControllerOriginalImage) as UIImage,
-                        1.0
-                    ) ?: UIImageJPEGRepresentation(
-                        didFinishPickingMediaWithInfo.getValue(
-                            UIImagePickerControllerEditedImage
-                        ) as UIImage, 1.0
-                    )
-                    val bytes = ByteArray(imageNSData!!.length.toInt())
-                    memcpy(bytes.refTo(0), imageNSData!!.bytes, imageNSData!!.length)
+                    val originalImage = didFinishPickingMediaWithInfo.getValue(UIImagePickerControllerOriginalImage) as? UIImage
 
-                    val path = NSSearchPathForDirectoriesInDomains(
+                    originalImage?.let { image ->
+
+                        // Convert image to JPEG data
+                        val data = UIImageJPEGRepresentation(image, 1.0)
+
+                        // Save to documents directory
+                        val path = NSSearchPathForDirectoriesInDomains(
                         NSDocumentDirectory,
                         NSUserDomainMask,
                         true
                     )[0] as String
-                    val filePath = "$path/" + NSUUID.UUID().UUIDString + ".jpg"
-                    imageNSData.writeToFile(filePath, atomically = true)
-                    onImagePicked(bytes)
+                        val filePath = "$path/" + NSUUID.UUID().UUIDString + ".jpg"
+                    data?.writeToFile(filePath, atomically = true)
+//                        val filename = NSUUID.UUID().UUIDString + ".jpg"
+//                        val documentsUrl = FileManager.default.urls(
+//                            for(NSDocumentDirectory in NSUserDomainMask)
+//                        ).first()
+//                        val fileUrl = documentsUrl.appendingPathComponent(filename)
+//                        data?.writeToFile(fileUrl.path, atomically = true)
+
+                        // Convert to bytes
+                        val bytes = ByteArray(data!!.length.toInt())
+                        //data?.copyBytes(to: bytes)
+                        memcpy(bytes.refTo(0), data!!.bytes, data!!.length)
+
+                        // Return image bytes
+                        onImagePicked(bytes)
+
+                    }
+
                     picker.dismissViewControllerAnimated(true, null)
+
                 }
 
-
-                override fun imagePickerControllerDidCancel(picker: UIImagePickerController) {
-                    picker.dismissViewControllerAnimated(true, null)
-                }
             }
         }
-    }
-
-    actual fun takeImage() {
-
 //        imagePickerController.setCameraCaptureMode(UIImagePickerControllerCameraCaptureMode.UIImagePickerControllerCameraCaptureModePhoto)
 //        imagePickerController.setDelegate(delegate)
-//        UIApplication.sharedApplication.keyWindow?.rootViewController?.presentViewController(
-//            imagePickerController, true, null
-//        )
-        rootController.presentViewController(imagePickerController, true) {
-            imagePickerController.delegate = delegate
-        }
+        UIApplication.sharedApplication.keyWindow?.rootViewController?.presentViewController(
+            picker, true, null
+        )
+//        rootController.presentViewController(imagePickerController, true) {
+//            imagePickerController.delegate = delegate
+//        }
     }
 }
 
