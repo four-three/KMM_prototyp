@@ -2,9 +2,16 @@ import SwiftUI
 
 @main
 struct iOSApp: App {
+    
+    init() {
+        UIView.setAnimationsEnabled(false)
+    }
+    
 	var body: some Scene {
 		WindowGroup {
-			ContentView()
+            ZStack {
+			    ContentView()
+			}.preferredColorScheme(.dark).ignoresSafeArea(.keyboard)
 		}
 	}
 }

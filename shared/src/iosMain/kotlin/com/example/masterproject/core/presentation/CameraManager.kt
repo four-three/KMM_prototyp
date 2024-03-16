@@ -93,38 +93,31 @@ actual class CameraManagerOld(
 
     @OptIn(ExperimentalForeignApi::class)
     actual fun takeImage() {
-
         val picker = UIImagePickerController().apply {
             sourceType =  UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypeCamera
+            cameraCaptureMode = UIImagePickerControllerCameraCaptureMode.UIImagePickerControllerCameraCaptureModePhoto
             delegate = object : NSObject(), UIImagePickerControllerDelegateProtocol,
                 UINavigationControllerDelegateProtocol {
-
                 override fun imagePickerController(
                     picker: UIImagePickerController,
                     didFinishPickingMediaWithInfo: Map<Any?, *>
                 ) {
-
-                    val originalImage = didFinishPickingMediaWithInfo.getValue(UIImagePickerControllerOriginalImage) as? UIImage
+                    val originalImage = didFinishPickingMediaWithInfo.getValue(
+                        UIImagePickerControllerOriginalImage
+                    ) as? UIImage
 
                     originalImage?.let { image ->
-
                         // Convert image to JPEG data
                         val data = UIImageJPEGRepresentation(image, 1.0)
 
                         // Save to documents directory
                         val path = NSSearchPathForDirectoriesInDomains(
-                        NSDocumentDirectory,
-                        NSUserDomainMask,
-                        true
-                    )[0] as String
+                            NSDocumentDirectory,
+                            NSUserDomainMask,
+                            true
+                        ).first().toString()
                         val filePath = "$path/" + NSUUID.UUID().UUIDString + ".jpg"
-                    data?.writeToFile(filePath, atomically = true)
-//                        val filename = NSUUID.UUID().UUIDString + ".jpg"
-//                        val documentsUrl = FileManager.default.urls(
-//                            for(NSDocumentDirectory in NSUserDomainMask)
-//                        ).first()
-//                        val fileUrl = documentsUrl.appendingPathComponent(filename)
-//                        data?.writeToFile(fileUrl.path, atomically = true)
+                        data?.writeToFile(filePath, atomically = true)
 
                         // Convert to bytes
                         val bytes = ByteArray(data!!.length.toInt())
@@ -133,23 +126,14 @@ actual class CameraManagerOld(
 
                         // Return image bytes
                         onImagePicked(bytes)
-
                     }
-
                     picker.dismissViewControllerAnimated(true, null)
-
                 }
-
             }
         }
-//        imagePickerController.setCameraCaptureMode(UIImagePickerControllerCameraCaptureMode.UIImagePickerControllerCameraCaptureModePhoto)
-//        imagePickerController.setDelegate(delegate)
         UIApplication.sharedApplication.keyWindow?.rootViewController?.presentViewController(
             picker, true, null
         )
-//        rootController.presentViewController(imagePickerController, true) {
-//            imagePickerController.delegate = delegate
-//        }
     }
 }
 

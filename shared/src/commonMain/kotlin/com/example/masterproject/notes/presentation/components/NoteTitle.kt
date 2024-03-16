@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-@Composable
+@Composable    
 fun NoteTitle(
     value: String,
     placeholder: String,
