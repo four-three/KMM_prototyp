@@ -9,8 +9,6 @@ sealed interface NoteListEvent {
     data class EditNote(val note: Note): NoteListEvent
     object SaveNote: NoteListEvent
 
-
-    //TODO: Will come back later (https://www.youtube.com/watch?v=XWSzbMnpAgI) 18:40
     data class OnNoteChanged(val value: String): NoteListEvent
 
     //if i don't need to compare these classes i don't have to use data-class

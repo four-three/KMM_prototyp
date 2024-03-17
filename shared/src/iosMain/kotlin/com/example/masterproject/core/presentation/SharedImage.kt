@@ -31,7 +31,6 @@ actual class SharedImage(private val image: UIImage?) {
         val byteArray = toByteArray()
         return if (byteArray != null) {
             Image.makeFromEncoded(byteArray).toComposeImageBitmap()
-            //Bitmap.makeFromImage(Image.makeFromEncoded(byteArray)).asComposeImageBitmap()
         } else {
             null
         }

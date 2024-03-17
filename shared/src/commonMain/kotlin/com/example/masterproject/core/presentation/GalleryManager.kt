@@ -9,13 +9,3 @@ expect class GalleryManagerOld {
     fun registerGalleryManager(onImagePicked: (ByteArray) -> Unit)
     fun pickImage()
 }
-
-// ------------------------------------------------------------------------------------------
-@Composable
-expect fun rememberGalleryManager(onResult: (SharedImage?) -> Unit): GalleryManager
-
-expect class GalleryManager(
-    onLaunch: () -> Unit
-) {
-    fun launch()
-}

@@ -29,7 +29,6 @@ fun NoteListItem(
     note: Note,
     modifier : Modifier = Modifier
 ) {
-
     // Convert timestamp to LocalDateTime
     val localDateTime = Instant.fromEpochMilliseconds(note.createdAt).toLocalDateTime(TimeZone.currentSystemDefault())
     // Format the date and hour

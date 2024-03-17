@@ -51,40 +51,11 @@ fun AddNote(
     galleryManager.registerGalleryManager { imageBytes ->
         onEvent(NoteListEvent.OnPhotoPicked(imageBytes))
     }
-    //val coroutineScope = rememberCoroutineScope()
-
-    //var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
-//    val galleryManager = rememberGalleryManager {
-//        coroutineScope.launch {
-//            val byteArray = withContext(Dispatchers.Default) {
-//                it?.toByteArray()
-//            }
-//            onEvent(NoteListEvent.OnPhotoPicked(byteArray!!))
-//            val bitmap = withContext(Dispatchers.Default) {
-//                it?.toImageBitmap()
-//            }
-//            imageBitmap = bitmap
-//        }
-//    }
-
 
     val cameraManager = createCameraManager()
     cameraManager.registerCameraManager { imageBytes ->
         onEvent(NoteListEvent.OnPhotoPicked(imageBytes))
     }
-//    val cameraManager = rememberCameraManager {
-//        coroutineScope.launch {
-//            val byteArray = withContext(Dispatchers.Default) {
-//                it?.toByteArray()
-//            }
-//            onEvent(NoteListEvent.OnPhotoPicked(byteArray!!))
-////            val bitmap = withContext(Dispatchers.Default) {
-////                it?.toImageBitmap()
-////            }
-////            imageBitmap = bitmap
-//        }
-//    }
-
 
     val permissionsManager = createPermissions(object : PermissionCallback {
         override fun onPermissionStatus(
@@ -115,14 +86,17 @@ fun AddNote(
                         PermissionLocationType.LOCATION_SERVICE_ON -> {
                             onEvent(NoteListEvent.OnLocationServiceOn)
                         }
+
                         PermissionLocationType.LOCATION_FOREGROUND -> {
                             onEvent(NoteListEvent.OnLocationServiceOn)
                         }
+
                         PermissionLocationType.LOCATION_BACKGROUND -> {
                             onEvent(NoteListEvent.OnLocationServiceOn)
                         }
                     }
                 }
+
                 else -> {
                     onEvent(NoteListEvent.OnLocationServiceOff)
                 }
@@ -130,7 +104,7 @@ fun AddNote(
         }
     })
 
-    if(!state.isLocationServiceOn) {
+    if (!state.isLocationServiceOn) {
         permissionsManager.askForLocationPermission(PermissionLocationType.LOCATION_BACKGROUND)
     }
 
@@ -148,7 +122,6 @@ fun AddNote(
 
     if (state.isGalleryOpen) {
         if (permissionsManager.isPermissionGranted(PermissionType.GALLERY)) {
-            //galleryManager.launch()
             galleryManager.pickImage()
         } else {
             permissionsManager.askPermission(PermissionType.GALLERY)
@@ -157,7 +130,6 @@ fun AddNote(
     }
     if (state.isCameraOpen) {
         if (permissionsManager.isPermissionGranted(PermissionType.CAMERA)) {
-//            cameraManager.launch()
             cameraManager.takeImage()
         } else {
             permissionsManager.askPermission(PermissionType.CAMERA)
@@ -196,7 +168,7 @@ fun AddNote(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(Modifier.height(16.dp))
-                if(newNote?.photoBytes == null) {
+                if (newNote?.photoBytes == null) {
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(40))
@@ -220,19 +192,6 @@ fun AddNote(
                         )
                     }
                 } else {
-//                    val photoModifier = modifier.clip(RoundedCornerShape(10))
-//                    if(imageBitmap != null) {
-//                        Image(
-//                            bitmap = imageBitmap!!,
-//                            contentDescription = newNote?.title,
-//                            modifier = photoModifier
-//                                .size(150.dp)
-//                                .clickable {
-//                                    onEvent(NoteListEvent.OnAddPhotoClicked)
-//                                },
-//                            contentScale = ContentScale.Crop
-//                        )
-//                    }
                     NotePhoto(
                         note = newNote,
                         modifier = Modifier

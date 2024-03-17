@@ -14,6 +14,7 @@ data class NoteListState(
     val isCameraOpen: Boolean = false,
     val isGalleryOpen: Boolean = false,
     val isLocationServiceOn: Boolean = false,
+
     //error states
     val titleError: String? = null,
     //val dateError: String? = null,

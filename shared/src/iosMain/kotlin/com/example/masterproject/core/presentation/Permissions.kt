@@ -124,7 +124,8 @@ actual class Permissions actual constructor(private val callback: PermissionCall
         }
     }
 
-    //--------------------------------- Location ---------------------------------
+    //--------------------------------------- Location ---------------------------------------------
+    //----------------------------------------------------------------------------------------------
     @Composable
     override fun askForLocationPermission(permission: PermissionLocationType) {
         //TODO: could be squashed into one function
@@ -148,17 +149,6 @@ actual class Permissions actual constructor(private val callback: PermissionCall
                 askLocationBackgroundPermission(status, PermissionLocationType.LOCATION_BACKGROUND, callback, locationManager)
             }
         }
-//
-//
-//        return when (locationManager.authorizationStatus()) {
-//                kCLAuthorizationStatusAuthorizedAlways,
-//                kCLAuthorizationStatusAuthorizedWhenInUse,
-//                kCLAuthorizationStatusRestricted -> PermissionState.GRANTED
-//
-//                kCLAuthorizationStatusNotDetermined -> PermissionState.NOT_DETERMINED
-//                kCLAuthorizationStatusDenied -> PermissionState.DENIED
-//                else -> PermissionState.NOT_DETERMINED
-//            }
     }
 
     private fun askLocationOnPermission(

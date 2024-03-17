@@ -14,7 +14,7 @@ actual fun NotesTheme(
 ) {
     MaterialTheme(
         colorScheme = if(darkTheme) DarkColorScheme else LightColorScheme,
-        typography = typography, //not the same as in the video 48:15
+        typography = typography,
         content = content
     )
 }

@@ -88,6 +88,9 @@ actual class Permissions actual constructor(private val callback: PermissionCall
         }
     }
 
+    //----------------------------------------- Location -------------------------------------------
+    //----------------------------------------------------------------------------------------------
+
     @OptIn(ExperimentalPermissionsApi::class)
     @Composable
     override fun askForLocationPermission(permission: PermissionLocationType) {
