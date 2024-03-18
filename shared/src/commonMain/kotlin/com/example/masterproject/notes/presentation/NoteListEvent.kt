@@ -6,6 +6,8 @@ sealed interface NoteListEvent {
     object OnAddNewNoteClick: NoteListEvent
     object DismissNote: NoteListEvent //also auto saves the Note if no errors occur
     data class OnTitleChanged(val value: String): NoteListEvent
+
+    data class OnLocationSaved(val value: String): NoteListEvent
     data class EditNote(val note: Note): NoteListEvent
     object SaveNote: NoteListEvent
 

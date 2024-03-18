@@ -1,6 +1,7 @@
 package com.example.masterproject.notes.data
 
 import com.example.masterproject.core.data.ImageStorage
+import com.example.masterproject.core.data.LocationProvider
 import com.example.masterproject.database.NoteDatabase
 import com.example.masterproject.notes.domain.Note
 import com.example.masterproject.notes.domain.NoteDataSource
@@ -14,7 +15,8 @@ import kotlinx.datetime.Clock
 
 class SqlDelightNoteDataSource(
     db: NoteDatabase,
-    private val imageStorage: ImageStorage
+    private val imageStorage: ImageStorage,
+    private val locationProvider: LocationProvider
 ): NoteDataSource {
 
     private val queries = db.noteQueries
@@ -28,7 +30,7 @@ class SqlDelightNoteDataSource(
                 // load images parallel
                 supervisorScope {
                     noteEntities
-                        .map { async { it.toNote(imageStorage) } } //only works if toNote is suspend function
+                        .map { async { it.toNote(imageStorage, locationProvider) } } //only works if toNote is suspend function
                         .map { it.await() }
                 }
             }
@@ -38,11 +40,14 @@ class SqlDelightNoteDataSource(
         val imagePath = note.photoBytes?.let {
             imageStorage.saveImage(it)
         }
+        val location = note.location?.let {
+            locationProvider.getLocation()
+        }
         queries.insertNoteEntity(
             id = note.id,
             createdAt = Clock.System.now().toEpochMilliseconds(),
             updatedAt = Clock.System.now().toEpochMilliseconds(),
-            location = note.location,
+            location = location,
             title = note.title,
             note = note.note,
             imagePath = imagePath

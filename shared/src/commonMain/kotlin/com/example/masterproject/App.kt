@@ -15,9 +15,9 @@ import com.example.masterproject.notes.presentation.NoteListViewModel
 import dev.icerock.moko.mvvm.compose.getViewModel
 import dev.icerock.moko.mvvm.compose.viewModelFactory
 
-/*
+/**
 
-Here the Wrapper is implemented
+    Here the Wrapper is implemented
 
  */
 @Composable

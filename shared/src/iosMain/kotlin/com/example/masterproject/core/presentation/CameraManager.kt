@@ -108,7 +108,6 @@ actual class CameraManagerOld(
                     originalImage?.let { image ->
                         // Convert image to JPEG data
                         val data = UIImageJPEGRepresentation(image, 1.0)
-
                         // Save to documents directory
                         val path = NSSearchPathForDirectoriesInDomains(
                             NSDocumentDirectory,

@@ -91,7 +91,7 @@ class NoteListViewModel(
                     id = null,
                     createdAt = 0,
                     updatedAt = 0,
-                    location = "",
+                    location = null,
                     title = "",
                     note = "",
                     photoBytes = null
@@ -128,6 +128,12 @@ class NoteListViewModel(
                 )
             }
 
+            is NoteListEvent.OnLocationSaved -> {
+                newNote = newNote?.copy(
+                    location = event.value
+                )
+            }
+
             is NoteListEvent.OnPhotoTaken -> {
                 newNote?.let { note ->
                     event.bytes?.let { bytes ->
@@ -135,11 +141,6 @@ class NoteListViewModel(
                             photoBytes = bytes
                         )
                     }
-//                    viewModelScope.launch {
-//                        noteDataSource.insertNote(note)
-//                        delay(300L) // Animation delay
-//                        newNote = null
-//                    }
                 }
             }
 

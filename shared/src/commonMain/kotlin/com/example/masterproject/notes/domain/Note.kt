@@ -5,7 +5,7 @@ data class Note(
     val id: Long?,
     val createdAt: Long, //datetime? integer?
     val updatedAt: Long, //datetime? integer?
-    val location: String,
+    val location: String?,
     //saved by the user
     val title: String,
     val note: String,

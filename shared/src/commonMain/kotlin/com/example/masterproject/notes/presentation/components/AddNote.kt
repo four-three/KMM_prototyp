@@ -108,6 +108,7 @@ fun AddNote(
         permissionsManager.askForLocationPermission(PermissionLocationType.LOCATION_BACKGROUND)
     }
 
+
     if (state.isImageSourceOptionDialogOpen) {
         ImageSourceOptionDialog(onDismissRequest = {
             onEvent(NoteListEvent.OnSelectImageSource)

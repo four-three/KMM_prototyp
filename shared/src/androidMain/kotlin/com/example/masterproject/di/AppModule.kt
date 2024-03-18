@@ -3,6 +3,7 @@ package com.example.masterproject.di
 import android.content.Context
 import com.example.masterproject.core.data.DatabaseDriverFactory
 import com.example.masterproject.core.data.ImageStorage
+import com.example.masterproject.core.data.LocationProvider
 import com.example.masterproject.database.NoteDatabase
 import com.example.masterproject.notes.data.SqlDelightNoteDataSource
 import com.example.masterproject.notes.domain.NoteDataSource
@@ -16,7 +17,8 @@ actual class AppModule(
             db = NoteDatabase(
                 driver = DatabaseDriverFactory(context).create()
             ),
-            imageStorage = ImageStorage(context)
+            imageStorage = ImageStorage(context),
+            locationProvider = LocationProvider(context)
         )
     }
 }

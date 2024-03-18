@@ -3,7 +3,7 @@ CREATE TABLE noteEntity (
     -- will be DATETIME later?
     createdAt INTEGER NOT NULL,
     updatedAt INTEGER NOT NULL,
-    location TEXT NOT NULL,
+    location TEXT,
     title TEXT NOT NULL,
     note TEXT NOT NULL,
     imagePath TEXT

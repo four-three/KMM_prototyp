@@ -91,6 +91,14 @@ fun NoteDetail(
                     fontSize = 30.sp
                 )
                 Spacer(Modifier.height(16.dp))
+                Text(
+                    text = "${selectedNote?.location}",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth(),
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 20.sp
+                )
+                Spacer(Modifier.height(16.dp))
                 EditRow(
                     onEditClick = {
                         selectedNote?.let {
