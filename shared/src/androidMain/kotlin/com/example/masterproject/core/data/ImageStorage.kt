@@ -6,7 +6,9 @@ import kotlinx.coroutines.withContext
 import java.util.UUID
 
 /**
- * If images want to be save async then i have to get the permission and look out for the android api version
+ * Android implementation of ImageStorage.
+ *
+ * Note: If images want to be save async then i have to get the permission and look out for the android api version
  */
 actual class ImageStorage(
     private val context: Context

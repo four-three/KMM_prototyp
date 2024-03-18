@@ -64,7 +64,6 @@ class NoteListViewModel(
                         isSelectedNoteOpen = false,
                         isAddNewNoteOpen = false,
                         titleError = null,
-                        //locationError = null
                     ) }
                     delay(300L) // Animation delay
                     newNote = null
@@ -148,14 +147,12 @@ class NoteListViewModel(
                 newNote?.let { note ->
                     val result = NoteValidator.validateNote(note)
                     val errors = listOfNotNull(
-                        //result.locationError,
                         result.titleError
                     )
 
                     if(errors.isEmpty()) {
                         _state.update { it.copy(
                             isAddNewNoteOpen = false,
-                            //locationError = null,
                             titleError = null
                         ) }
                         viewModelScope.launch {
@@ -165,7 +162,6 @@ class NoteListViewModel(
                         }
                     } else {
                         _state.update { it.copy(
-                            //locationError = result.locationError,
                             titleError = result.titleError
                         ) }
                     }

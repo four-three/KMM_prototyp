@@ -19,6 +19,9 @@ import platform.Foundation.dataWithContentsOfFile
 import platform.Foundation.getBytes
 import platform.Foundation.stringByAppendingPathComponent
 import platform.Foundation.writeToFile
+/**
+ * iOS implementation of ImageStorage.
+ */
 @OptIn(ExperimentalForeignApi::class)
 actual class ImageStorage {
 

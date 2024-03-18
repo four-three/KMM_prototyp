@@ -10,7 +10,7 @@ suspend fun NoteEntity.toNote(imageStorage: ImageStorage, locationProvider: Loca
         id = id,
         createdAt = createdAt,
         updatedAt = updatedAt,
-        location = location?.let { locationProvider.getCurrentLocation() },
+        location = location?.let { locationProvider.getLocation() },
         title = title,
         note = note,
         photoBytes = imagePath?.let { imageStorage.getImage(it) }

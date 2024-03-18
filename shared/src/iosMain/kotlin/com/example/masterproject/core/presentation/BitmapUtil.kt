@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.toComposeImageBitmap
 import org.jetbrains.skia.Image
 
 /**
+ * iOS implementation using UIKit UIImage.
  * @alias toImageBitmap
  */
 @Composable

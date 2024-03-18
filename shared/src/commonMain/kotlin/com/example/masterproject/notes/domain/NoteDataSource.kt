@@ -7,8 +7,25 @@ import kotlinx.coroutines.flow.Flow
  * That the whole reason for this architecture. To isolate the database accesses
  */
 interface NoteDataSource {
-    fun getNotes(): Flow<List<Note>> //"Flow" updates the List when ever something changes
-    //"suspend" is used when we want to make changes
-    suspend fun insertNote(note: Note)//"suspend" is use here because this function isn't constantly updating the list, also "Flow" does already have suspend in it
+    /**
+     * Gets all notes from the data source.
+     *
+     * @note "Flow" updates the List when ever something changes
+     * @return a list of all notes
+     */
+    fun getNotes(): Flow<List<Note>>
+    /**
+     * Saves a note.
+     *
+     * @note "suspend" is used when we want to make changes
+     * @note2 "suspend" is use here because this function isn't constantly updating the list, also "Flow" does already have suspend in it
+     * @param note the note to save
+     */
+    suspend fun insertNote(note: Note)
+    /**
+     * Deletes a note.
+     *
+     * @param note the note to delete
+     */
     suspend fun deleteNote(id: Long)
 }

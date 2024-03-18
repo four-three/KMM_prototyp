@@ -8,10 +8,6 @@ object NoteValidator {
 //            result = result.copy(dateError = "Datetime error")
 //        }
 
-//        if (note.location.isBlank()) {
-//            result = result.copy(locationError = "Couldn't find the current location.")
-//        }
-
         if (note.title.isBlank()) {
             result = result.copy(titleError = "The Title is missing!")
         }
@@ -21,7 +17,6 @@ object NoteValidator {
 
     data class ValidationResult(
         val dateError: String? = null,
-        //val locationError: String? = null,
         val titleError: String? = null
     )
 }

@@ -38,7 +38,17 @@ import com.example.masterproject.notes.domain.Note
 import com.example.masterproject.notes.presentation.NoteListEvent
 import com.example.masterproject.notes.presentation.NoteListState
 
-
+/**
+ * Composable function for adding a new note.
+ * It provides a user interface for inputting note details, selecting an image for the note, and saving the note.
+ * It also handles permissions for accessing camera and gallery, and shows relevant dialogs based on state changes.
+ *
+ * @param state Current state of the note list, containing flags for various UI dialogs and permissions.
+ * @param newNote The note object that is being added or edited. It may contain a photo, title, and note text.
+ * @param isOpen Boolean flag to control the visibility of the add note bottom sheet.
+ * @param onEvent Lambda function to dispatch events to the NoteListViewModel.
+ * @param modifier Modifier for styling the Composable.
+ */
 @Composable
 fun AddNote(
     state: NoteListState,
@@ -47,16 +57,17 @@ fun AddNote(
     onEvent: (NoteListEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Gallery manager for handling image selection from the gallery.
     val galleryManager = createGalleryManager()
     galleryManager.registerGalleryManager { imageBytes ->
         onEvent(NoteListEvent.OnPhotoPicked(imageBytes))
     }
-
+    // Camera manager for handling taking photos with the camera.
     val cameraManager = createCameraManager()
     cameraManager.registerCameraManager { imageBytes ->
         onEvent(NoteListEvent.OnPhotoPicked(imageBytes))
     }
-
+    // Permissions manager for handling runtime permissions.
     val permissionsManager = createPermissions(object : PermissionCallback {
         override fun onPermissionStatus(
             permissionType: PermissionType,
@@ -108,7 +119,7 @@ fun AddNote(
         permissionsManager.askForLocationPermission(PermissionLocationType.LOCATION_BACKGROUND)
     }
 
-
+    // Dialog for choosing between camera and gallery for image selection.
     if (state.isImageSourceOptionDialogOpen) {
         ImageSourceOptionDialog(onDismissRequest = {
             onEvent(NoteListEvent.OnSelectImageSource)
@@ -141,6 +152,8 @@ fun AddNote(
         permissionsManager.launchSettings()
         onEvent(NoteListEvent.OnDeviceSettingDismissed)
     }
+
+    // Displays a dialog for permissions explanation if needed.
     if (state.isPermissionsDialogOpen) {
         AlertMessageDialog(title = "Permission Required",
             message = "To set your profile picture, please grant this permission. You can manage permissions in your device settings.",

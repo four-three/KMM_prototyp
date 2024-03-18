@@ -15,9 +15,10 @@ data class NoteListState(
     val isGalleryOpen: Boolean = false,
     val isLocationServiceOn: Boolean = false,
 
-    //error states
+    /**
+     * error states
+     */
     val titleError: String? = null,
     //val dateError: String? = null,
-    val locationError: String? = null
     //val noteError: String? = null
 )
