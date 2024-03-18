@@ -16,14 +16,14 @@ import platform.darwin.NSObject
 import platform.posix.memcpy
 
 @Composable
-actual fun createGalleryManager(): GalleryManagerOld {
+actual fun createGalleryManager(): GalleryManager {
     val rootController: UIViewController = LocalUIViewController.current
     return remember {
-        GalleryManagerOld(rootController)
+        GalleryManager(rootController)
     }
 }
 
-actual class GalleryManagerOld(
+actual class GalleryManager(
     private val rootController: UIViewController
 ) {
     /**

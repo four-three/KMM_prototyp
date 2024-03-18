@@ -1,39 +1,46 @@
-# KMM Prototyp
+# KMM Prototype
 
-Dieses Projekt dient als Prototyp für die Erforschung des Kotlin Multiplatform Mobile (KMM) Frameworks und Compose Multiplattform.
+This project serves as a prototype for exploring the Kotlin Multiplatform Mobile (KMM) framework and Compose Multiplatform.
 
-## Über das Projekt
+## About the Project
 
-Dieses Projekt wurde als Teil meines Masterprojekts an der Fachhochschule Erfurt erstellt. Ziel war es, einige grundlegende Funktionen von KMM und Compose Multiplatform exemplarisch umzusetzen und zu evaluieren.
+This project was created as part of my master's project at the University of Applied Sciences Erfurt. 
+The goal was to implement and evaluate some basic functionalities of KMM and Compose Multiplatform exemplarily.
 
-Folgende Funktionen sind im Prototyp enthalten:
+The prototype includes the following functionalities:
 
-- Shared Kotlin Code für Android und iOS
-- SQLite Datenbank mit SQLDelight
-- Ktor für Netzwerkanfragen
-- Compose UI für Android
-- SwiftUI für iOS
+- Shared Kotlin code for Android and iOS
+- SQLite database with SQLDelight
+- Ktor for network requests
+- Compose UI for Android
+- SwiftUI for iOS
 
 ## Getting Started
 
-Folgende Schritte sind notwendig, um das Projekt lokal auszuführen:
+The following steps are necessary to run the project locally:
 
-1. Repository klonen
-2. Android Studio öffnen und das Projekt importieren
-3. Abhängigkeiten mit Gradle synchronisieren
-4. Android App starten
-5. iOS App in Xcode öffnen und starten
+1. Clone the repository
+2. Open Android Studio and import the project
+3. Synchronize dependencies with Gradle
+4. Start the Android app
+5. Open and start the iOS app in Xcode
 
-## Architektur
+## Architecture
 
-Das Projekt nutzt folgende Architektur:
+The project utilizes the following architecture:
 
-- Shared Kotlin Code in `shared/src`
-- Plattformspezifischer Code unter `androidApp` und `iosApp`
-- Dependency Injection mit Koin
-- MVVM Architektur
-- Repository Pattern für Datenbank und Netzwerkzugriffe
+- Shared Kotlin code in `shared/src`
+- Platform-specific code under `androidApp` and `iosApp`
+- Dependency injection with Koin
+- MVVM architecture
+- Repository pattern for database and network access
 
-## Fazit
+## Conclusion
 
-Mit diesem Prototyp konnte ich einen ersten Einblick in KMM und Compose Multiplatform erhalten. Die grundlegenden Konzepte sind umgesetzt und die Apps funktionieren auf Android und iOS. Für ein reales Projekt gibt es jedoch noch viel Raum für Verbesserungen und Erweiterungen. Insgesamt bin ich aber positiv überrascht, wie produktiv man mit KMM arbeiten kann.
+With this prototype, I was able to gain an initial insight into KMM and Compose Multiplatform. 
+The basic concepts have been implemented, and the apps work on Android and iOS. However, 
+there is still much room for improvements and extensions for a real project. Overall, 
+I am positively surprised by how productive one can be with KMM.
+
+Please note that certain features such as camera capturing on iOS and location saving on both devices are currently not working. 
+This will need to be addressed in future updates or iterations of the project.

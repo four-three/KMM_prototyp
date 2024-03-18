@@ -13,13 +13,13 @@ import androidx.compose.ui.platform.LocalContext
 import java.util.UUID
 
 @Composable
-actual fun createCameraManager(): CameraManagerOld {
+actual fun createCameraManager(): CameraManager {
     return remember() {
-        CameraManagerOld()
+        CameraManager()
     }
 }
 
-actual class CameraManagerOld() {
+actual class CameraManager() {
     private lateinit var tempPhotoUri: Uri
     private lateinit var launcher: ActivityResultLauncher<Uri>
 

@@ -9,14 +9,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 
 @Composable
-actual fun createGalleryManager(): GalleryManagerOld {
+actual fun createGalleryManager(): GalleryManager {
     val activity = LocalContext.current as ComponentActivity
     return remember(activity) {
-        GalleryManagerOld(activity)
+        GalleryManager(activity)
     }
 }
 
-actual class GalleryManagerOld(
+actual class GalleryManager(
     private val activity: ComponentActivity
 ) {
     private lateinit var getContent: ActivityResultLauncher<String>
