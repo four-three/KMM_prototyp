@@ -30,7 +30,6 @@ fun App(
         darkTheme = darkTheme,
         dynamicColor = dynamicColor
     ) {
-
         val viewModel = getViewModel(
             key = "note-list-screen",
             factory = viewModelFactory {
